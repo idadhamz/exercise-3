@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <link rel="shortcut icon" href="dis.png">
+        <title>Exercise 3</title>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.4/css/bulma.min.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+        <!-- <script src="data.js"></script> -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.17.0/axios.js"></script>
+        <style>
+            body { margin:50px; }
+            #content { border: 1px solid #eeeeee; padding: 30px; border-radius: 8px; margin-bottom:10px}
+        </style>
+    </head>
+    <body>
+        <div class="columns is-centered is-vcentered">
+            <div id="content" class="column is-three-quarters">
+                <h2 class="subtitle"><b>Data dari API dan filter Data | Exercise 3</b></h2>
+                <h2 class="subtitle">Dadi Ilham Setiadi - Javascript Development Course Batch 4</h2>
+                <hr />
+                <div class="field">
+                    <p class="control">
+                        <input class="input is-primary" id="search_input" type="text" placeholder="Search ur character starwars...">
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="columns is-centered is-vcentered">
+            <div id="content" class="column is-three-quarters">
+                <table id="table" class="table is-bordered is-striped is-narrow is-hoverable is-fullwidth">
+                    <thead>
+                        <tr>
+                            <!-- <th>No</th> -->
+                            <th>Name</th>
+                            <th>Gender</th>
+                            <th>Height</th>
+                            <th>Mass</th>
+                            <th>Hair Color</th>
+                            <th>Skin Color</th>
+                        </tr>
+                    </thead>
+                    <tbody id="isi">
+                        
+                    </tbody>
+                </table>
+                <script>
+                    var apiSwapi = "https://swapi.co/api/people/";
+
+                    function getData(){
+                        return axios.get(apiSwapi)
+                        .then(response => {
+                            return response.data;
+                            console.log('data ada');
+                        })
+                        .catch(function(error){
+                            console.log('Data tidak ada');
+                        })
+                    }
+
+                    getData().then(data => {
+                        // var row='<tr>';
+                        // data.results.forEach(dataSwapi => {
+                        //     row +='<td>'+dataSwapi.name+'</td>'
+                        //     +'<td>'+dataSwapi.gender+'</td>'
+                        //     +'<td>'+dataSwapi.height+'</td>'
+                        //     +'<td>'+dataSwapi.mass+'</td>';
+                        // });
+                        // row+='</tr>';
+                        // $('#table tbody').append(row);
+                        console.log(data)
+                        // for(var x = 1; x <= data.results.length; x++){
+                        //     var y = x
+                        //     console.log(y)
+                        // }
+                        // console.log(data.results.length)
+                        data.results.forEach(li => {
+                            document.querySelector('#isi').insertAdjacentHTML('beforeend',
+                            '<td>'+li.name+'</td>'
+                            +'<td>'+li.gender+'</td>'
+                            +'<td>'+li.height+'</td>'
+                            +'<td>'+li.mass+'</td>'
+                            +'<td>'+li.hair_color+'</td>'
+                            +'<td>'+li.skin_color+'</td>')
+                        });
+                    })
+
+                    $(document).ready(function(){
+                        $("#search_input").on("keyup", function() {
+                            var value = $(this).val().toLowerCase();
+                            $("#isi tr").filter(function() {
+                                $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+                            });
+                        });
+                    });
+                </script>
+            </div>
+        </div>
+    </body>
+</html>
